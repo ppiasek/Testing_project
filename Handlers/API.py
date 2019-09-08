@@ -1,0 +1,72 @@
+from __future__ import print_function
+import pickle
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from googleapiclient.http import MediaFileUpload
+
+
+class GDriveAPI(object):
+
+    def __init__(self):
+
+        self._credentials = None
+        self.list_files = None
+        self.upload = None
+        self.upload_id = None
+
+        self._SCOPES = ['https://www.googleapis.com/auth/drive']
+
+        if os.path.exists('token.pickle'):
+            with open('token.pickle', 'rb') as token:
+                self._credentials = pickle.load(token)
+        if not self._credentials or not self._credentials.valid:
+            if self._credentials and self._credentials.expired and self._credentials.refresh_token:
+                self._credentials.refresh(Request())
+            else:
+                self._flow = InstalledAppFlow.from_client_secrets_file(
+                    'credentials.json', self._SCOPES)
+                self._credentials = self._flow.run_local_server(port=0)
+            with open('token.pickle', 'wb') as token:
+                pickle.dump(self._credentials, token)
+
+        self.service = build('drive', 'v3', credentials=self._credentials)
+        self.show_files(pagesize=1000)
+
+    def login_check(self):
+        return self.service._http.credentials.valid  # Returns certificate validity
+
+    def show_files(self, pagesize=100):
+
+        self.list_files = self.service.files().list(pageSize=pagesize, fields="files(name, size, modifiedTime, mimeType, id)").execute().get('files', [])
+
+    def print_list_files(self):
+
+        for items in self.list_files:
+            print(items)
+
+    def list_files_length(self):
+
+        return len(self.list_files)
+
+    def simple_upload(self, path, metadata={}):
+
+        self.upload = MediaFileUpload(path)
+        self.upload = self.service.files().create(body=metadata, media_body=self.upload, fields='id').execute()
+        self.upload_id = self.upload.get('id')
+
+
+    def multipart_upload(self):
+        pass
+
+    def resumable_upload(self):
+        pass
+
+    def find_by_id(self, file_id):
+        self.show_files(pagesize=1000)
+        if True in map(lambda val: val['id'] == file_id, self.list_files):
+            return True
+        else:
+            return False
+
