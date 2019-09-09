@@ -4,7 +4,9 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import *
+import io
+import requests
 
 
 class GDriveAPI(object):
@@ -15,6 +17,7 @@ class GDriveAPI(object):
         self.list_files = None
         self.upload = None
         self.upload_id = None
+        self.download_data = None
 
         self._SCOPES = ['https://www.googleapis.com/auth/drive']
 
@@ -69,4 +72,14 @@ class GDriveAPI(object):
             return True
         else:
             return False
+
+    def download(self, file_id, dest = "Blank.txt"):
+        self.download_data = self.service.files().get_media(fileId=file_id)
+        self.fh = io.FileIO(dest, 'wb')
+        self.downloader = MediaIoBaseDownload(self.fh, self.download_data)
+        self.done = False
+        while self.done is False:
+            status, self.done = self.downloader.next_chunk()
+            print("Download %d%%." % int(status.progress() * 100))
+
 
