@@ -2,3 +2,4 @@
 /Handlers/credentials.json
 /Handlers/token.pickle
 .idea/
+venv/
