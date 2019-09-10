@@ -2,5 +2,8 @@
 .idea/
 venv/
 /gDrive_API_tests/.pytest_cache
-*/token.pickle
-*/credentials.json
+/Handlers/credentials.json
+/Handlers/token.pickle
+/gDrive_API_tests/credentials.json
+/gDrive_API_tests/token.pickle
+/.pytest_cache
