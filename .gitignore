@@ -1,9 +1,9 @@
-/DataExamples/
+/data_examples/
 .idea/
 venv/
-/gDrive_API_tests/.pytest_cache
-/Handlers/credentials.json
-/Handlers/token.pickle
-/gDrive_API_tests/credentials.json
-/gDrive_API_tests/token.pickle
+/gdrive_api_tests/.pytest_cache
+/handlers/credentials.json
+/handlers/token.pickle
+/gdrive_api_tests/credentials.json
+/gdrive_api_tests/token.pickle
 /.pytest_cache
