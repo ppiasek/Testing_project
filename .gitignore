@@ -3,3 +3,6 @@
 /Handlers/token.pickle
 .idea/
 venv/
+/gDrive_API_tests/.pytest_cache
+/gDrive_API_tests/token.pickle
+/gDrive_API_tests/credentials.json
