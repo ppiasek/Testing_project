@@ -81,4 +81,8 @@ class GDriveAPI(object):
         while done is False:
             status, done = downloader.next_chunk()
             print("Download %d%%." % int(status.progress() * 100))
+<<<<<<< HEAD
         fh.close()
+=======
+        fh.close()
+>>>>>>> 5f7da833271e79afd30cb14c5af9a8010807320a
