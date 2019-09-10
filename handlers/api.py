@@ -1,11 +1,13 @@
 from __future__ import print_function
-import pickle
-import os.path
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from googleapiclient.http import *
 import io
+import os.path
+import pickle
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.http import *
+
+_SCOPES = ['https://www.googleapis.com/auth/drive']
 
 
 class GDriveAPI(object):
@@ -14,11 +16,8 @@ class GDriveAPI(object):
 
         self._credentials = None
         self.list_files = None
-        self.upload = None
         self.upload_id = None
         self.download_data = None
-
-        self._SCOPES = ['https://www.googleapis.com/auth/drive']
 
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
@@ -28,7 +27,7 @@ class GDriveAPI(object):
                 self._credentials.refresh(Request())
             else:
                 self._flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', self._SCOPES)
+                    'credentials.json', _SCOPES)
                 self._credentials = self._flow.run_local_server(port=0)
             with open('token.pickle', 'wb') as token:
                 pickle.dump(self._credentials, token)
@@ -52,12 +51,14 @@ class GDriveAPI(object):
 
         return len(self.list_files)
 
-    def simple_upload(self, path, metadata={}):
+    def simple_upload(self, path, metadata=None):
 
-        self.upload = MediaFileUpload(path)
-        self.upload = self.service.files().create(body=metadata, media_body=self.upload, fields='id').execute()
-        self.upload_id = self.upload.get('id')
-
+        upload = MediaFileUpload(path)
+        if metadata:
+            upload = self.service.files().create(body=metadata, media_body=upload, fields='id').execute()
+        else:
+            upload = self.service.files().create(media_body=upload, fields='id').execute()
+        self.upload_id = upload.get('id')
 
     def multipart_upload(self):
         pass
@@ -73,13 +74,11 @@ class GDriveAPI(object):
             return False
 
     def download(self, file_id, dest="Blank.txt"):
-        self.download_data = self.service.files().get_media(fileId=file_id)
-        self.fh = io.FileIO(dest, 'wb')
-        self.downloader = MediaIoBaseDownload(self.fh, self.download_data)
-        self.done = False
-        while self.done is False:
-            status, self.done = self.downloader.next_chunk()
+        download_data = self.service.files().get_media(fileId=file_id)
+        fh = io.FileIO(dest, 'wb')
+        downloader = MediaIoBaseDownload(fh, download_data)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
             print("Download %d%%." % int(status.progress() * 100))
-        self.fh.close()
-
-
+        fh.close()
