@@ -7,3 +7,4 @@ venv/
 /gdrive_api_tests/credentials.json
 /gdrive_api_tests/token.pickle
 /.pytest_cache
+Credentials/

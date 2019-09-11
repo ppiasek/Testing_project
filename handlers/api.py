@@ -8,6 +8,8 @@ from googleapiclient.discovery import build
 from googleapiclient.http import *
 
 _SCOPES = ['https://www.googleapis.com/auth/drive']
+_token = '../Credentials/token.pickle'
+_json_credentials = '../Credentials/credentials.json'
 
 
 class GDriveAPI(object):
@@ -19,17 +21,17 @@ class GDriveAPI(object):
         self.upload_id = None
         self.download_data = None
 
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
+        if os.path.exists(_token):
+            with open(_token, 'rb') as token:
                 self._credentials = pickle.load(token)
         if not self._credentials or not self._credentials.valid:
             if self._credentials and self._credentials.expired and self._credentials.refresh_token:
                 self._credentials.refresh(Request())
             else:
                 self._flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', _SCOPES)
+                    _json_credentials, _SCOPES)
                 self._credentials = self._flow.run_local_server(port=0)
-            with open('token.pickle', 'wb') as token:
+            with open(_token, 'wb') as token:
                 pickle.dump(self._credentials, token)
 
         self.service = build('drive', 'v3', credentials=self._credentials)
