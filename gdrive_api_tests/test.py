@@ -12,7 +12,7 @@ class GDriveTests(unittest.TestCase):
         self.assertTrue(self.gdrive.login_check(), "Login failed")
 
     def test2_upload(self):
-        self.gdrive.simple_upload("/home/xantek/Code/Python/Testing_project/DataExamples/Downloader_Diablo2_plPL.exe", metadata={'name': 'Downloader_Diablo2_plPL.exe'})
+        self.gdrive.simple_upload("/home/xantek/Code/Python/Testing_project/data_examples/Downloader_Diablo2_plPL.exe", metadata={'name': 'Downloader_Diablo2_plPL.exe'})
         self.assertTrue(self.gdrive.find_by_id(self.gdrive.upload_id), "File not available on gDrive")
 
     def test3_download(self):

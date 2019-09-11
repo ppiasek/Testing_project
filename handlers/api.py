@@ -8,8 +8,8 @@ from googleapiclient.discovery import build
 from googleapiclient.http import *
 
 _SCOPES = ['https://www.googleapis.com/auth/drive']
-_token = '../Credentials/token.pickle'
-_json_credentials = '../Credentials/credentials.json'
+_token = '../credentials/token.pickle'
+_json_credentials = '../credentials/credentials.json'
 
 
 class GDriveAPI(object):
