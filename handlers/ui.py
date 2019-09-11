@@ -1,4 +1,4 @@
-from Handlers.API import GDriveAPI
+from handlers.api import GDriveAPI
 
 test = GDriveAPI()
 test.print_list_files()
