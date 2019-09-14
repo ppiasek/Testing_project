@@ -16,15 +16,21 @@ class LoginPage(TestBase):
 
     @property
     def login_field_next_button(self):
-        return self._driver.find_element_by_class_name('U26fgb O0WRkf zZhnYe e3Duub C0oVfc nDKKZc DL0QTb')
+        return self._driver.find_element_by_id('identifierNext')
 
     @property
     def password_field(self):
-        #return self._driver.find_element_by_xpath('//input[@name="password"]')
-        WebDriverWait(self._driver, 10).until(EC.presence_of_element_located((By.XPATH, "//input[@name='password']")))
-        return self._driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input')
-
+        # pass_field = WebDriverWait(self._driver, 10).until(EC.presence_of_element_located((By.NAME, 'password')))
+        # return pass_field
+        return self._driver.find_element_by_name('password')
 
     @property
     def password_field_next_button(self):
-        return self._driver.find_element_by_class_name('ZFr60d CeoRYc')
+        return self._driver.find_element_by_id('passwordNext')
+        # next_button = WebDriverWait(self._driver, 10).until(EC.visibility_of_element_located((By.ID, 'passwordNext')))
+        # next_button = WebDriverWait(self._driver, 10).until(EC.element_to_be_clickable((By.ID, 'passwordNext')))
+        # return next_button
+
+    @property
+    def user_logged_in(self):
+        return self._driver.find_element_by_id('drive_main_page')

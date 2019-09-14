@@ -4,8 +4,8 @@ venv/
 /gdrive_api_tests/.pytest_cache
 /handlers/credentials.json
 /handlers/token.pickle
-/gdrive_api_tests/credentials.json
-/gdrive_api_tests/token.pickle
+/credentials/credentials.json
+/credentials/token.pickle
 /.pytest_cache
 credentials/
 *.log
