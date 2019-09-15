@@ -11,7 +11,6 @@ browser_driver variable contains names/remaining location of all required driver
 tested_url variable stores url for our site ti test.
 
 # What works
-- Login with Selenium in Chrome browser [Windows / Linux?]
 - Going through left side menu via Selenium
 - Logout with Selenium in Chrome browser (Only by XPath for user icon)
 - API login
@@ -21,7 +20,9 @@ tested_url variable stores url for our site ti test.
 # What semi works
 - Assertions that verify if correct menu is selected does not work for My Drive and Recent options
 - Assertions that verify if correct menu is selected work only with XPath
+- Login with Selenium in Chrome browser sometimes have the same issue as Firefox browser [Windows / Linux?]
 
 # Known bugs
 - Selenium tests on Firefox browser are not working due to inability to log into google account [Windows / Linux?]
 - For some reason, selecting user icon cannot be done by class name. XPath works well.
+- Pytest does not start due to __init__ in TestBase class.

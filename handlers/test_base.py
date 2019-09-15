@@ -1,4 +1,5 @@
 import platform
+import pytest
 from pathlib import Path
 from selenium import webdriver
 
