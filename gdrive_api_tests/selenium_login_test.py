@@ -1,5 +1,4 @@
 import unittest
-from handlers.ui_functions import UIFunctions
 from handlers.gdrive_login_page import GDriveLoginUI
 from pathlib import Path
 
@@ -15,7 +14,7 @@ class LoginTest(unittest.TestCase):
         cls.page_object.screenshot()
 
     def test_1_login(self):
-        self.page_object.navigate_to_login_page
+        self.page_object.navigate_to_login_page.click()
         self.page_object.screenshot()
         self.page_object.login_field.clear()
         self.page_object.login_field.send_keys(self.username)

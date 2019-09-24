@@ -52,16 +52,24 @@ class UIBase(object):
     def login(self):
         _username, _password = Path(credentials_path).read_text().split('\n')
         self._driver.find_element_by_link_text('Go to Google Drive').click()
+        time.sleep(1)
         self._driver.find_element_by_id('identifierId').clear()
         self._driver.find_element_by_id('identifierId').send_keys(_username)
+        time.sleep(1)
         self._driver.find_element_by_id('identifierNext').click()
+        time.sleep(1)
         self._driver.find_element_by_name('password').clear()
         self._driver.find_element_by_name('password').send_keys(_password)
+        time.sleep(1)
         self._driver.find_element_by_id('passwordNext').click()
+        time.sleep(1)
 
     def logout(self):
+        time.sleep(1)
         self._driver.find_element_by_css_selector('#gb > div:nth-of-type(2) > div:nth-of-type(3) > div > div:nth-of-type(2) > div > a').click()
+        time.sleep(1)
         self._driver.find_element_by_id('gb_71').click()
+        time.sleep(1)
 
     def screenshot(self):
         _execution_time = datetime.now().strftime('%H.%M.%S.%f')
