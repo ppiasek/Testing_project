@@ -1,8 +1,10 @@
 import platform
 import os
 import sys
-import time
+from time import sleep
 from datetime import datetime
+from handlers.gdrive_login_page import GDriveLoginUI
+from handlers.gdrive_logout_page import GDriveLogoutUI
 from pathlib import Path
 from selenium import webdriver
 
@@ -27,7 +29,7 @@ evidence_path = '../evidence/'
 
 class UIBase(object):
 
-    def __init__(self):
+    def driver_setup(self):
         if os.environ['browser'] == 'chrome':
             self._driver = webdriver.Chrome(executable_path=str(Path(f'{driver_location}{browser_driver[platform.system()][os.environ["browser"]]}')))
         elif os.environ['browser'] == 'firefox':
@@ -51,28 +53,29 @@ class UIBase(object):
 
     def login(self):
         _username, _password = Path(credentials_path).read_text().split('\n')
-        self._driver.find_element_by_link_text('Go to Google Drive').click()
-        time.sleep(1)
-        self._driver.find_element_by_id('identifierId').clear()
-        self._driver.find_element_by_id('identifierId').send_keys(_username)
-        time.sleep(1)
-        self._driver.find_element_by_id('identifierNext').click()
-        time.sleep(1)
-        self._driver.find_element_by_name('password').clear()
-        self._driver.find_element_by_name('password').send_keys(_password)
-        time.sleep(1)
-        self._driver.find_element_by_id('passwordNext').click()
-        time.sleep(1)
+        _login_page = GDriveLoginUI(self._driver)
+        _login_page.navigate_to_login_page.click()
+        sleep(1)
+        _login_page.login_field.clear()
+        _login_page.login_field.send_keys(_username)
+        sleep(1)
+        _login_page.login_field_next_button.click()
+        sleep(1)
+        _login_page.password_field.clear()
+        _login_page.password_field.send_keys(_password)
+        sleep(1)
+        _login_page.password_field_next_button.click()
+        sleep(1)
 
     def logout(self):
-        time.sleep(1)
-        self._driver.find_element_by_css_selector('#gb > div:nth-of-type(2) > div:nth-of-type(3) > div > div:nth-of-type(2) > div > a').click()
-        time.sleep(1)
-        self._driver.find_element_by_id('gb_71').click()
-        time.sleep(1)
+        _logout_page = GDriveLogoutUI(self._driver)
+        _logout_page.user_view.click()
+        sleep(1)
+        _logout_page.user_logout.click()
+        sleep(1)
 
     def screenshot(self):
         _execution_time = datetime.now().strftime('%H.%M.%S.%f')
         getframe_expr = 'sys._getframe({}).f_code.co_name'
-        time.sleep(1)
+        sleep(1)
         self._driver.save_screenshot(f"{Path(f'{self.evidence_location}/{eval(getframe_expr.format(2))}_{_execution_time}')}.png")

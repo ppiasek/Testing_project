@@ -1,18 +1,19 @@
 import unittest
 import time
 from handlers.gdrive_page import GDriveUI
+from handlers.ui_base import UIBase
 
 
 class GDriveTreeTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.page_object = GDriveUI()
+        cls.page_object = UIBase()
         cls.page_object.login()
         cls.page_object.screenshot()
 
     def test_1_shared(self):
-        self.page_object.shared_with_me_button.click()
+        self.page_object._drive.click()
         time.sleep(1)
         self.assertTrue(self.page_object._driver.current_url == 'https://drive.google.com/drive/shared-with-me', "Shared with me not selected")
         self.page_object.screenshot()
