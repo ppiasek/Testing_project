@@ -25,4 +25,4 @@ tested_url variable stores url for our site ti test.
 # Known bugs
 - Selenium tests on Firefox browser are not working due to inability to log into google account [Windows / Linux?]
 - For some reason, selecting user icon cannot be done by class name. XPath works well.
-- Pytest does not start due to __init__ in TestBase class.
+- Pytest does not start due to __init__ in UIBase class.
