@@ -2,13 +2,16 @@ import unittest
 import time
 from handlers.gdrive_page import GDriveUI
 from handlers.ui_base import UIBase
+from handlers.gdrive_page import GDriveUI
 
 
 class GDriveTreeTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.page_object = UIBase()
+        login_object = UIBase()
+        login_object.login()
+        cls.page_object = GDriveUI().login()
         cls.page_object.login()
         cls.page_object.screenshot()
 

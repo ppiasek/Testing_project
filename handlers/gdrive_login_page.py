@@ -1,9 +1,7 @@
+from handlers.ui_base import UIBase
 
 
-class GDriveLoginUI:
-
-    def __init__(self, driver):
-        self._driver = driver
+class GDriveLoginUI(UIBase):
 
     @property
     def navigate_to_login_page(self):

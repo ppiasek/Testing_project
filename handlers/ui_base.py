@@ -1,45 +1,19 @@
-import platform
 import os
 import sys
 from time import sleep
 from datetime import datetime
-from handlers.gdrive_login_page import GDriveLoginUI
-from handlers.gdrive_logout_page import GDriveLogoutUI
 from pathlib import Path
-from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import WebDriverWait
 
-
-tested_url = 'https://www.google.com/drive/'
-driver_location = '../drivers/'
-browser_driver = {
-    'Windows':
-        {
-            'chrome': 'chromedriver_77.exe',
-            'firefox': 'geckodriver_0.25.0.exe'
-        },
-    'Linux':
-        {
-            'chrome': 'chromedriver_linux_77',
-            'firefox': 'geckodriver_linux_0.25.0'
-        }
-}
-credentials_path = '../credentials/login_credentials.txt'
 evidence_path = '../evidence/'
 
 
 class UIBase(object):
 
-    def driver_setup(self):
-        if os.environ['browser'] == 'chrome':
-            self._driver = webdriver.Chrome(executable_path=str(Path(f'{driver_location}{browser_driver[platform.system()][os.environ["browser"]]}')))
-        elif os.environ['browser'] == 'firefox':
-            self._driver = webdriver.Firefox(executable_path=str(Path(f'{driver_location}{browser_driver[platform.system()][os.environ["browser"]]}')))
-        else:
-            raise Exception('Wrong browser selected')
-
-        self.wait_implictly(15)
-        self._driver.get(tested_url)
-        self._driver.maximize_window()
+    def __init__(self, driver):
+        self._driver = driver
 
         _execution_time = datetime.now().strftime('%d.%m.%Y_%H.%M.%S')
         self.evidence_location = Path(f'{evidence_path}{_execution_time}')
@@ -50,32 +24,41 @@ class UIBase(object):
 
     def wait_implictly(self, timeout):
         self._driver.implicitly_wait(timeout)
-
-    def login(self):
-        _username, _password = Path(credentials_path).read_text().split('\n')
-        _login_page = GDriveLoginUI(self._driver)
-        _login_page.navigate_to_login_page.click()
-        sleep(1)
-        _login_page.login_field.clear()
-        _login_page.login_field.send_keys(_username)
-        sleep(1)
-        _login_page.login_field_next_button.click()
-        sleep(1)
-        _login_page.password_field.clear()
-        _login_page.password_field.send_keys(_password)
-        sleep(1)
-        _login_page.password_field_next_button.click()
-        sleep(1)
-
-    def logout(self):
-        _logout_page = GDriveLogoutUI(self._driver)
-        _logout_page.user_view.click()
-        sleep(1)
-        _logout_page.user_logout.click()
-        sleep(1)
-
     def screenshot(self):
         _execution_time = datetime.now().strftime('%H.%M.%S.%f')
-        getframe_expr = 'sys._getframe({}).f_code.co_name'
         sleep(1)
-        self._driver.save_screenshot(f"{Path(f'{self.evidence_location}/{eval(getframe_expr.format(2))}_{_execution_time}')}.png")
+        self._driver.save_screenshot(
+            f"{Path(f'{self.evidence_location}/{sys._getframe(2).f_code.co_name}_{_execution_time}')}.png"
+        )
+
+    def _wait_for_element(self, args):
+        WebDriverWait(self._driver, 10).until(
+            expected_conditions.presence_of_element_located(args))
+
+    def _wait_for_element_to_be_clickable(self, args):
+        WebDriverWait(self._driver, 20).until(expected_conditions.element_to_be_clickable(args))
+
+    def _generic_id_element(self, object_id):
+        self._wait_for_element((By.ID, object_id))
+        self._wait_for_element_to_be_clickable((By.ID, object_id))
+        return self._driver.find_element_by_id(object_id)
+
+    def _generic_class_element(self, object_class_name):
+        self._wait_for_element((By.CLASS_NAME, object_class_name))
+        self._wait_for_element_to_be_clickable((By.CLASS_NAME, object_class_name))
+        return self._driver.find_element_by_class_name(object_class_name)
+
+    def _generic_css_element(self, object_css_selector):
+        self._wait_for_element((By.CSS_SELECTOR, object_css_selector))
+        self._wait_for_element_to_be_clickable((By.CSS_SELECTOR, object_css_selector))
+        return self._driver.find_element_by_css_selector(object_css_selector)
+
+    def _generic_name_element(self, object_name):
+        self._wait_for_element((By.NAME, object_name))
+        self._wait_for_element_to_be_clickable((By.NAME, object_name))
+        return self._driver.find_element_by_name(object_name)
+
+    def _generic_text_element(self, object_text):
+        self._wait_for_element((By.LINK_TEXT, object_text))
+        self._wait_for_element_to_be_clickable((By.LINK_TEXT, object_text))
+        return self._driver.find_element_by_link_text(object_text)

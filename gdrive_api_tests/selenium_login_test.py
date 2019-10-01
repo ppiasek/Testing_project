@@ -11,6 +11,7 @@ class LoginTest(unittest.TestCase):
     def setUpClass(cls):
         cls.page_object = GDriveLoginUI()
         cls.username, cls.password = Path(credentials_path).read_text().split('\n')
+        cls.page_object.login()
         cls.page_object.screenshot()
 
     def test_1_login(self):

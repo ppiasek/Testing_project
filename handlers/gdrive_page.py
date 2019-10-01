@@ -1,10 +1,7 @@
 from handlers.ui_base import UIBase
 
 
-class GDriveUI:
-
-    def __init__(self, driver):
-        self._driver = driver
+class GDriveUI(UIBase):
 
     @property
     def my_drive_button(self):

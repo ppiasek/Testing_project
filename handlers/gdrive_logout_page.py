@@ -1,10 +1,7 @@
 from handlers.ui_base import UIBase
 
 
-class GDriveLogoutUI:
-
-    def __init__(self, driver):
-        self._driver = driver
+class GDriveLogoutUI(UIBase):
 
     @property
     def user_view(self):
