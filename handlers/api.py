@@ -15,7 +15,6 @@ _json_credentials = '../credentials/credentials.json'
 class GDriveAPI(object):
 
     def __init__(self):
-
         self._credentials = None
         self.list_files = None
         self.upload_id = None
@@ -42,7 +41,8 @@ class GDriveAPI(object):
 
     def show_files(self, pagesize=100):
 
-        self.list_files = self.service.files().list(pageSize=pagesize, fields="files(name, size, modifiedTime, mimeType, id)").execute().get('files', [])
+        self.list_files = self.service.files().list(
+            pageSize=pagesize, fields="files(name, size, modifiedTime, mimeType, id)").execute().get('files', [])
 
     def print_list_files(self):
 
@@ -50,11 +50,9 @@ class GDriveAPI(object):
             print(items)
 
     def list_files_length(self):
-
         return len(self.list_files)
 
     def simple_upload(self, path, metadata=None):
-
         upload = MediaFileUpload(path)
         if metadata:
             upload = self.service.files().create(body=metadata, media_body=upload, fields='id').execute()

@@ -1,6 +1,5 @@
 import os
 import sys
-from time import sleep
 from datetime import datetime
 from pathlib import Path
 from selenium.webdriver.common.by import By
@@ -14,9 +13,8 @@ class UIBase(object):
 
     def __init__(self, driver):
         self._driver = driver
-
         _execution_time = datetime.now().strftime('%d.%m.%Y_%H.%M.%S')
-        self.evidence_location = Path(f'{evidence_path}{_execution_time}')
+        self.evidence_location = Path(f'{evidence_path}{sys._getframe(2).f_code.co_name}_{_execution_time}')
         os.makedirs(self.evidence_location)
 
     def close(self):
@@ -24,16 +22,15 @@ class UIBase(object):
 
     def wait_implictly(self, timeout):
         self._driver.implicitly_wait(timeout)
+
     def screenshot(self):
         _execution_time = datetime.now().strftime('%H.%M.%S.%f')
-        sleep(1)
         self._driver.save_screenshot(
             f"{Path(f'{self.evidence_location}/{sys._getframe(2).f_code.co_name}_{_execution_time}')}.png"
         )
 
     def _wait_for_element(self, args):
-        WebDriverWait(self._driver, 10).until(
-            expected_conditions.presence_of_element_located(args))
+        WebDriverWait(self._driver, 10).until(expected_conditions.presence_of_element_located(args))
 
     def _wait_for_element_to_be_clickable(self, args):
         WebDriverWait(self._driver, 20).until(expected_conditions.element_to_be_clickable(args))

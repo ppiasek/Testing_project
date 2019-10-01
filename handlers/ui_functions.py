@@ -18,20 +18,13 @@ class UIFunctions(object):
     def login(self):
         _username, _password = Path(credentials_path).read_text().split('\n')
         self.login_page.navigate_to_login_page.click()
-        sleep(1)
         self.login_page.login_field.clear()
         self.login_page.login_field.send_keys(_username)
-        sleep(1)
         self.login_page.login_field_next_button.click()
-        sleep(1)
         self.login_page.password_field.clear()
         self.login_page.password_field.send_keys(_password)
-        sleep(1)
         self.login_page.password_field_next_button.click()
-        sleep(1)
 
     def logout(self):
         self.logout_page.user_view.click()
-        sleep(1)
         self.logout_page.user_logout.click()
-        sleep(1)
