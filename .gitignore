@@ -1,13 +1,11 @@
 /data_examples/
 .idea/
 venv/
-/gdrive_api_tests/.pytest_cache
-/handlers/credentials.json
-/handlers/token.pickle
-/credentials/credentials.json
-/credentials/token.pickle
-/.pytest_cache
+*/.pytest_cache
 credentials/
 *.log
 */__pycache__
 /evidence
+*/__init__.pyc
+.cache/
+*/__init__.py

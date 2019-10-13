@@ -6,7 +6,7 @@ class GDriveLogoutUI(UIBase):
     @property
     def user_view(self):
         return self.\
-            _generic_css_element('gb > div:nth-of-type(2) > div:nth-of-type(3) > div > div:nth-of-type(2) > div > a')
+            _generic_css_element('#gb > div:nth-of-type(2) > div:nth-of-type(3) > div > div:nth-of-type(2) > div > a')
 
     @property
     def user_logout(self):
