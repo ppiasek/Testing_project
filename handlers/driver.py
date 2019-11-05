@@ -4,9 +4,9 @@ from pathlib import Path
 from selenium import webdriver
 
 
-tested_url = 'https://www.google.com/drive/'
-driver_location = '../drivers/'
-browser_driver = {
+TESTED_URL = 'https://www.google.com/drive/'
+DRIVER_LOCATION = '../drivers/'
+BROWSER_DRIVER = {
     'Windows':
         {
             'chrome': 'chromedriver_77.exe',
@@ -23,14 +23,14 @@ browser_driver = {
 def driver_setup():
     if os.environ['browser'] == 'chrome':
         driver = webdriver.Chrome(executable_path=str(
-            Path(f'{driver_location}{browser_driver[platform.system()][os.environ["browser"]]}')))
+            Path(f'{DRIVER_LOCATION}{BROWSER_DRIVER[platform.system()][os.environ["browser"]]}')))
     elif os.environ['browser'] == 'firefox':
         driver = webdriver.Firefox(
             executable_path=str(
-                Path(f'{driver_location}{browser_driver[platform.system()][os.environ["browser"]]}')))
+                Path(f'{DRIVER_LOCATION}{BROWSER_DRIVER[platform.system()][os.environ["browser"]]}')))
     else:
         raise Exception('Wrong browser selected')
 
-    driver.get(tested_url)
+    driver.get(TESTED_URL)
     driver.maximize_window()
     return driver

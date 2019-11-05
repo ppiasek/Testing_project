@@ -2,9 +2,9 @@ import unittest
 from handlers import api
 from pathlib import Path
 
-upload_data_path = '../data_examples/Downloader_Diablo2_plPL.exe'
-upload_metadata = {'name': 'Downloader_Diablo2_plPL.exe'}
-download_name = upload_metadata['name']
+UPLOAD_DATA_PATH = '../data_examples/Downloader_Diablo2_plPL.exe'
+UPLOAD_METADATA = {'name': 'Downloader_Diablo2_plPL.exe'}
+DOWNLOAD_NAME = UPLOAD_METADATA['name']
 
 
 class GDriveTests(unittest.TestCase):
@@ -17,11 +17,11 @@ class GDriveTests(unittest.TestCase):
         self.assertTrue(self.gdrive.login_check(), "Login failed")
 
     def test2_upload(self):
-        self.gdrive.simple_upload(Path(upload_data_path), metadata=upload_metadata)
+        self.gdrive.simple_upload(Path(UPLOAD_DATA_PATH), metadata=UPLOAD_METADATA)
         self.assertTrue(self.gdrive.find_by_id(self.gdrive.upload_id), "File not available on gDrive")
 
     def test3_download(self):
-        self.gdrive.download(self.gdrive.upload_id, dest=download_name)
+        self.gdrive.download(self.gdrive.upload_id, dest=DOWNLOAD_NAME)
 
     @classmethod
     def tearDownClass(cls) -> None:

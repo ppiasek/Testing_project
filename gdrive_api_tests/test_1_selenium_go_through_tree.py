@@ -1,14 +1,11 @@
-import unittest
-from handlers.ui_functions import UIFunctions
+from handlers import ui_testbase
 
 
-class GDriveTreeTest(unittest.TestCase):
+class GDriveTreeTest(ui_testbase.UITestBase):
 
     @classmethod
     def setUpClass(cls):
-        cls.ui = UIFunctions()
-        cls.ui.login()
-        cls.ui.screenshot()
+        super().setUpClass()
 
     def test_1_shared(self):
         self.ui.main_page.shared_with_me_button.click()
@@ -42,8 +39,4 @@ class GDriveTreeTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        # comments left in case something needs to be debbuged
-        cls.ui.logout()
-        cls.ui.screenshot()
-        cls.ui.main_page.close()
-        # pass
+        super().tearDownClass()

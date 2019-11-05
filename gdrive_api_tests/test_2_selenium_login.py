@@ -1,16 +1,16 @@
-import unittest
 from handlers.ui_functions import UIFunctions
+from handlers import ui_testbase
 from pathlib import Path
 
-credentials_path = '../credentials/login_credentials.txt'
+CREDENTIALS_PATH = '../credentials/login_credentials.txt'
 
 
-class LoginTest(unittest.TestCase):
+class LoginTest(ui_testbase.UITestBase):
 
     @classmethod
     def setUpClass(cls):
-        cls.ui = UIFunctions()
-        cls.username, cls.password = Path(credentials_path).read_text().split('\n')
+        cls.ui = UIFunctions(frame_depth=1)
+        cls.username, cls.password = Path(CREDENTIALS_PATH).read_text().split('\n')
         cls.ui.screenshot()
 
     def test_1_login(self):
@@ -30,8 +30,4 @@ class LoginTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        # comments left in case something needs to be debbuged
-        cls.ui.logout()
-        cls.ui.screenshot()
-        cls.ui.login_page.close()
-        # pass
+        super().tearDownClass()

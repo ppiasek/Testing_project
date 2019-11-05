@@ -1,14 +1,11 @@
-import unittest
-from handlers.ui_functions import UIFunctions
+from handlers import ui_testbase
 
 
-class GDriveTreeTest(unittest.TestCase):
+class LogoutTest(ui_testbase.UITestBase):
 
     @classmethod
     def setUpClass(cls):
-        cls.ui = UIFunctions()
-        cls.ui.login()
-        cls.ui.screenshot()
+        super().setUpClass()
 
     def test_1_logout(self):
         self.ui.logout_page.user_view.click()
@@ -19,6 +16,4 @@ class GDriveTreeTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        # comments left in case something needs to be debbuged
-        cls.ui.logout_page.close()
-        # pass
+        cls.ui.main_page.close()
