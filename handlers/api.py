@@ -7,29 +7,30 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import *
 
-_SCOPES = ['https://www.googleapis.com/auth/drive']
+SCOPES = ['https://www.googleapis.com/auth/drive']
+TOKEN = '../credentials/token.pickle'
+JSON_CREDENTIALS = '../credentials/credentials.json'
 
 
 class GDriveAPI(object):
 
     def __init__(self):
-
         self._credentials = None
         self.list_files = None
         self.upload_id = None
         self.download_data = None
 
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
+        if os.path.exists(TOKEN):
+            with open(TOKEN, 'rb') as token:
                 self._credentials = pickle.load(token)
         if not self._credentials or not self._credentials.valid:
-            if self._credentials and self._credentials.expired and self._credentials.refresh_token:
+            if self._credentials and self._credentials.expired and self._credentials.refreshTOKEN:
                 self._credentials.refresh(Request())
             else:
                 self._flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', _SCOPES)
+                    JSON_CREDENTIALS, SCOPES)
                 self._credentials = self._flow.run_local_server(port=0)
-            with open('token.pickle', 'wb') as token:
+            with open(TOKEN, 'wb') as token:
                 pickle.dump(self._credentials, token)
 
         self.service = build('drive', 'v3', credentials=self._credentials)
@@ -40,7 +41,8 @@ class GDriveAPI(object):
 
     def show_files(self, pagesize=100):
 
-        self.list_files = self.service.files().list(pageSize=pagesize, fields="files(name, size, modifiedTime, mimeType, id)").execute().get('files', [])
+        self.list_files = self.service.files().list(
+            pageSize=pagesize, fields="files(name, size, modifiedTime, mimeType, id)").execute().get('files', [])
 
     def print_list_files(self):
 
@@ -48,11 +50,9 @@ class GDriveAPI(object):
             print(items)
 
     def list_files_length(self):
-
         return len(self.list_files)
 
     def simple_upload(self, path, metadata=None):
-
         upload = MediaFileUpload(path)
         if metadata:
             upload = self.service.files().create(body=metadata, media_body=upload, fields='id').execute()
